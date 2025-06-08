@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail - Mart</title>
+    <link rel="stylesheet" href="/productDetail.css">
+</head>
+<body>
+    <%- include('../partials/navbar') %>
+
+    <main class="product-detail-container">
+        <div class="product-image-section">
+            <img src="/<%= product.image %>" alt="<%= product.name %>" class="product-image">
+            <div class="image-gallery">
+                <!-- Additional product images can be added here -->
+                <img src="/<%= product.image %>" alt="Thumbnail 1" class="thumbnail active">
+                <img src="/default-image.jpg" alt="Thumbnail 2" class="thumbnail">
+                <img src="/default-image.jpg" alt="Thumbnail 3" class="thumbnail">
+            </div>
+        </div>
+
+        <div class="product-info-section">
+            <h1 class="product-title"><%= product.name %></h1>
+            <div class="product-meta">
+                <span class="product-rating">⭐ <%= product.rating %></span>
+                <span class="product-price">₹<%= product.price %></span>
+            </div>
+
+            <div class="product-description">
+                <h2>Description</h2>
+                <p><%= product.description %></p>
+            </div>
+
+            <div class="product-actions">
+                <div class="quantity-selector">
+                    <button class="quantity-btn" onclick="decrementQuantity()">-</button>
+                    <input type="number" id="quantity" value="1" min="1" max="10">
+                    <button class="quantity-btn" onclick="incrementQuantity()">+</button>
+                </div>
+
+                <div class="action-buttons">
+                    <form action="/cart" method="POST" class="cart-form">
+                        <input type="hidden" name="productId" value="<%= product._id %>">
+                        <input type="hidden" name="quantity" id="cartQuantity" value="1">
+                        <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+                    </form>
+                    <form action="/favourites" method="POST">
+                        <input type="hidden" name="productId" value="<%= product._id %>">
+                        <button type="submit" class="add-to-favorites-btn">❤️ Add to Favorites</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="product-details">
+                <h2>Product Details</h2>
+                <ul>
+                    <li><strong>Brand:</strong> <%= product.brand || 'Generic' %></li>
+                    <li><strong>Availability:</strong> In Stock</li>
+                    <li><strong>Category:</strong> <%= product.category || 'General' %></li>
+                    <li><strong>SKU:</strong> <%= product.sku || 'N/A' %></li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function incrementQuantity() {
+            const input = document.getElementById('quantity');
+            const cartQuantity = document.getElementById('cartQuantity');
+            if (input.value < 10) {
+                input.value = parseInt(input.value) + 1;
+                cartQuantity.value = input.value;
+            }
+        }
+
+        function decrementQuantity() {
+            const input = document.getElementById('quantity');
+            const cartQuantity = document.getElementById('cartQuantity');
+            if (input.value > 1) {
+                input.value = parseInt(input.value) - 1;
+                cartQuantity.value = input.value;
+            }
+        }
+    </script>
+</body>
+</html>

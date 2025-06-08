@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up - Mart</title>
+  <link rel="stylesheet" href="/signup.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+
+  <div class="signup-wrapper">
+    <div class="signup-card">
+      <h2>Create an Account 📝</h2>
+      <p>Join us and explore the Mart experience</p>
+
+      <form action="/signup" method="POST" class="signup-form">
+        <%- include('../partials/error') %>
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" name="firstName" placeholder="John" value="<%= oldInput.firstName ? oldInput.firstName : '' %>" required />
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input type="text" id="lastName" name="lastName" placeholder="Doe" value="<%= oldInput.lastName ? oldInput.lastName : '' %>" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" value="<%= oldInput.email ? oldInput.email : ''  %>" required />
+        </div>
+
+        <div class="form-group password-group">
+          <label for="password">Password</label>
+          <div class="password-wrapper">
+              <input type="password" id="password" name="password" placeholder="••••••••" required />
+            <span class="toggle-password" onclick="togglePassword('password')">👁️</span>
+          </div>
+        </div>
+
+        <div class="form-group password-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <div class="password-wrapper">
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••••" required />
+            <span class="toggle-password" onclick="togglePassword('confirmPassword')">👁️</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="userType">I am a</label>
+          <select id="userType" name="userType" required>
+            <option value="" disabled selected>Select role</option>
+            <option value="guest" <%= oldInput.userType === 'guest' ? 'selected' : '' %>>Guest</option>
+            <option value="host" <%= oldInput.userType === 'host' ? 'selected' : '' %>>Host</option>
+          </select>
+        </div>
+
+        <div class="form-group checkbox-group">
+            <input type="checkbox" id="terms" name="terms" required <%= oldInput.terms === 'on' ? 'checked' : '' %>>
+          <label for="terms">I agree to the <a href="#">terms and conditions</a></label>
+        </div>
+
+        <button type="submit" class="btn signup-btn">Register</button>
+      </form>
+
+      <div class="form-footer">
+        <p>Already have an account? <a href="/login">Login</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function togglePassword(id) {
+      const input = document.getElementById(id);
+      const icon = input.nextElementSibling;
+      if (input.type === "password") {
+        input.type = "text";
+        icon.textContent = "🙈";
+      } else {
+        input.type = "password";
+        icon.textContent = "👁️";
+      }
+    }
+  </script>
+</body>
+</html>

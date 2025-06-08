@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mart</title>
+  <link rel="stylesheet" href="/home.css" />
+  <link rel="stylesheet" href="/editButton.css" />
+</head>
+<body>
+  <%- include('../partials/navbar') %> <!-- Navbar Partial -->
+
+  <section class="hero">
+    <span>Hey! Host</span><h1>Welcome to Mart</h1>
+  </section>
+
+  <main>
+    <section class="products">
+      <h2>Our Products</h2>
+      <div class="product-container">
+        <% registeredProducts.forEach(product => { %>
+          <div class="product-card">
+            <img src="<%= product.image || '/default-image.jpg' %>" alt="<%= product.name %>">
+            <div class="product-info">
+              <h3><%= product.name %></h3>
+              <p class="description"><%= product.description %></p>
+              <p class="price">₹<%= product.price %></p>
+              <p class="rating">⭐ <%= product.rating %></p>
+            </div>
+            <div class="button-group">
+                <a href="/host/editProduct/<%= product._id %>?edit=true" class="btn edit-btn">✏️ Edit</a>
+                <form action="/host/removeProduct/<%= product._id %>" method="POST">
+                    <button type="submit" class="btn remove-btn">🗑️ Remove</button>
+                </form>
+            </div>            
+          </div>
+        <% }) %>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

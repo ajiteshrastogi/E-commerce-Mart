@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shopping Cart - Mart</title>
+  <link rel="stylesheet" href="/cart.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <%- include('../partials/navbar') %> <!-- Navbar Partial -->
+  
+  <div class="cart-container">
+    <h1>Shopping Cart</h1>
+    
+    <div class="cart-content">
+      <div class="cart-items">
+        <% if (cart && cart.items && cart.items.length > 0) { %>
+          <% cart.items.forEach(item => { %>
+            <div class="cart-item">
+              <div class="item-image">
+                <img src="<%= item.product.image || '/default-image.jpg' %>" alt="<%= item.product.name %>">
+              </div>
+              <div class="item-details">
+                <h3><%= item.product.name %></h3>
+                <p class="item-price">₹<%= item.product.price %></p>
+                <div class="quantity-controls">
+                  <form action="/cart/update-quantity" method="POST" class="quantity-form">
+                    <input type="hidden" name="productId" value="<%= item.product._id %>">
+                    <button type="button" class="quantity-btn minus" onclick="updateQuantity(this, -1)">-</button>
+                    <input type="number" name="quantity" value="<%= item.quantity %>" min="1" class="quantity-input" onchange="submitQuantity(this)">
+                    <button type="button" class="quantity-btn plus" onclick="updateQuantity(this, 1)">+</button>
+                  </form>
+                </div>
+              </div>
+              <div class="item-actions">
+                <form action="/cart/remove/<%= item.product._id %>" method="POST">
+                  <button type="submit" class="remove-btn">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </form>
+                <p class="item-total">₹<%= item.product.price * item.quantity %></p>
+              </div>
+            </div>
+          <% }); %>
+        <% } else { %>
+          <div class="empty-cart">
+            <i class="fas fa-shopping-cart"></i>
+            <h2>Your cart is empty</h2>
+            <p>Add some items to your cart to see them here</p>
+            <a href="/" class="continue-shopping">Continue Shopping</a>
+          </div>
+        <% } %>
+      </div>
+
+      <div class="cart-summary">
+        <h2>Order Summary</h2>
+        <div class="summary-item">
+          <span>Subtotal</span>
+          <span>₹<%= cart ? cart.totalPrice : 0 %></span>
+        </div>
+        <div class="summary-item">
+          <span>Shipping</span>
+          <span>Free</span>
+        </div>
+        <div class="summary-item total">
+          <span>Total</span>
+          <span>₹<%= cart ? cart.totalPrice : 0 %></span>
+        </div>
+        <button class="checkout-btn">Proceed to Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function updateQuantity(button, change) {
+      const form = button.closest('.quantity-form');
+      const input = form.querySelector('.quantity-input');
+      const newValue = parseInt(input.value) + change;
+      
+      if (newValue >= 1) {
+        input.value = newValue;
+        submitQuantity(input);
+      }
+    }
+
+    function submitQuantity(input) {
+      const form = input.closest('.quantity-form');
+      form.submit();
+    }
+  </script>
+</body>
+</html>
