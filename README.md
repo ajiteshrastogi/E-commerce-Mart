@@ -200,4 +200,4 @@ npm test
 
 ## 📞 Support
 
-For support, email your.email@example.com or create an issue in the repository. 
+For support, email ajiteshrastogi19@gamil.com or create an issue in the repository. 
